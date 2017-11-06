@@ -1,0 +1,19 @@
+<table>
+  <tr>
+    <th>
+      <textarea name="informacion" rows="40" cols="50" disabled><%= @mensaje %></textarea>
+    </th>
+    <th valign="top">
+      <h2> Flechas: 3 </h2>
+      <form action="/action" method="post">
+        <button type="submit" value="disparar">Lanzar flecha</button>
+      </form>
+      <form action="/action" method="post">
+        <button type="submit" value="arriba">&#8593;</button>
+        <button type="submit" value="abajo">&#8595;</button>
+        <button type="submit" value="izquierda">&#8592;</button>
+        <button type="submit" value="derecha">&#8594;</button>
+      </form>
+    </th>
+  </tr>
+</table>
