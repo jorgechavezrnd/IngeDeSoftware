@@ -10,7 +10,8 @@ end
 
 get '/game' do
   @cantFlechas = 3
-  @mensaje = $MENSAJE
+  @mensaje = $MENSAJE + '
+Que accion quieres realizar?'
   erb :game
 end
 
