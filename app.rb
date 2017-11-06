@@ -1,8 +1,10 @@
 require 'sinatra'
+require './lib/cave'
 set :bind, '0.0.0.0'
 set :port, 3000
 
-$MENSAJE = "Te encuentras en la habitacion..."
+$CAVE = Cave.new
+$MENSAJE = "Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
 
 get '/' do
   erb :index
@@ -16,19 +18,19 @@ Que accion quieres realizar?'
 end
 
 post '/action' do
-  if params[:accion] == 'arriba'
-    $MENSAJE = "arriba"
-  elsif params[:accion] == 'abajo'
-    $MENSAJE = "abajo"
-  elsif params[:accion] == 'izquierda'
-    $MENSAJE = "izquierda"
-  elsif params[:accion] == 'derecha'
-    $MENSAJE = "derecha"
-  elsif params[:accion] == 'disparar'
-    $MENSAJE = "lanzar flecha"
-  else
-    $MENSAJE = "Te encuentras en la habitacion..."
+  if params[:accion] == 'salir'
+    $CAVE = Cave.new
+    $MENSAJE = "Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
     redirect "/"
+  elsif params[:accion] == 'disparar'
+    redirect "/game"
+  else
+    if !$CAVE.movePlayer(params[:accion])
+      $MENSAJE = "Movimiento no valido
+Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
+    else
+      $MENSAJE = "Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
+    end
   end
   
   redirect "/game"
