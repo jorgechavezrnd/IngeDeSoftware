@@ -26,7 +26,7 @@ post '/action' do
     redirect "/game"
   else
     if !$CAVE.movePlayer(params[:accion])
-      $MENSAJE = "Movimiento no valido
+      $MENSAJE = "No puedes moverte por ahi
 Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
     else
       $MENSAJE = "Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
