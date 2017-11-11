@@ -1,2 +1,0 @@
-# Se ignore Gemfile.lock para evitar problemas con Travis
-Gemfile.lock
