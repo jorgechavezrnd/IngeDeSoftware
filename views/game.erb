@@ -10,6 +10,18 @@
     }
   </script>
 <% end %>
+<% if @ganaste == true %>
+  <script>
+    if (window.confirm('Ganaste. Fin del juego')) 
+    {
+      window.location.href='/';
+    }
+    else
+    {
+      window.location.href='/';
+    }
+  </script>
+<% end %>
 
 <table>
   <tr>
@@ -26,9 +38,20 @@
 
     <th valign="top">
       <h2> Flechas: <%= @cantFlechas %> </h2>
-      <form action="/action" method="post">
-        <button name="accion" type="submit" value="disparar">Lanzar flecha</button>
-      </form>
+      <% if @cantFlechas > 0 %>
+        <form action="/action" method="post">
+          <button name="accion" type="submit" value="disparar">Lanzar flecha</button>
+        </form>
+      <% end %>
+      <% if @disparo == true %>
+        <label>Donde quieres lanzarla?...</label>
+        <form action="/shot" method="post">
+          <button name="accion" type="submit" value="arriba">&#8593;</button>
+          <button name="accion" type="submit" value="abajo">&#8595;</button>
+          <button name="accion" type="submit" value="izquierda">&#8592;</button>
+          <button name="accion" type="submit" value="derecha">&#8594;</button>
+        </form>
+      <% end %>
       <form action="/action" method="post">
         <button name="accion" type="submit" value="arriba">&#8593;</button>
         <button name="accion" type="submit" value="abajo">&#8595;</button>

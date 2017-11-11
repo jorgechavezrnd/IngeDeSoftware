@@ -108,6 +108,49 @@ class Cave
     end
   end
 
+  def shotArrow(address)
+    @arrow  = Player.new
+    @arrow.x = @player.x
+    @arrow.y = @player.y
+    if address == 'arriba'
+      while @arrow.x >= 0 do
+        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
+          return 1
+        end
+        @arrow.x = @arrow.x - 1
+      end
+      return 0
+    end
+    if address == 'abajo'
+      while @arrow.x < $NUMBER_ROWS do
+        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
+          return 1
+        end
+        @arrow.x = @arrow.x + 1
+      end
+      return 0
+    end
+    if address == 'izquierda'
+      while @arrow.y >= 0 do
+        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
+          return 1
+        end
+        @arrow.y = @arrow.y - 1
+      end
+      return 0
+    end
+    if address == 'derecha'
+      while @arrow.y < $NUMBER_COLUMNS do
+        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
+          return 1
+        end
+        @arrow.y = @arrow.y + 1
+      end
+      return 0
+    end
+    return -1
+  end
+  
   def shootArrow
     if address == 'arriba'
       for i in @player.y..0

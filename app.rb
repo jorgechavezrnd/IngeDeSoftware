@@ -12,15 +12,20 @@ end
 $PERDER = false
 $DETECT=false
 $MENSAJESTATE=true
-
+$GANAR = false
+$FLECHAS = 3
 
 get '/' do
+  $PERDER = false
+  $GANAR = false
   erb :index
 end
 
 get '/game' do
   @perdiste = $PERDER
-  @cantFlechas = 3
+  @disparo = $DISPARAR
+  $DISPARAR = false
+  @cantFlechas = $FLECHAS
   @mensaje = $MENSAJE
   if($MENSAJESTATE==true)
     @MensajeEstado = 'Que accion quieres realizar? 
@@ -49,6 +54,7 @@ post '/action' do
     end
     redirect "/"
   elsif params[:accion] == 'disparar'
+    $DISPARAR = true
     $MENSAJESTATE=false
     $MENSAJE = "A donde desea disparar?
     * Norte
@@ -91,5 +97,19 @@ post '/action' do
     end
   end
   
+  redirect "/game"
+end
+      
+post '/shot' do
+  $FLECHAS = $FLECHAS - 1
+  resultAction = $CAVE.shotArrow(params[:accion])
+  if resultAction == 0
+    $MENSAJE = "La flecha se pierde de tu vista
+Te encuentras en la habitacion [" + $CAVE.getPlayer.x.to_s + "][" + $CAVE.getPlayer.y.to_s + "]"
+  end
+  if resultAction == 1
+    $CAVE = Cave.new
+    $GANAR = true
+  end
   redirect "/game"
 end
