@@ -1,12 +1,16 @@
 language: ruby
+
+before_install:
+  - gem install sinatra
+  - gem install rspec
+  - gem install cucumber
+  - gem install rack-test
+  - gem install webrat
+  - gem install rspec
+  - gem install simplecov
+  - gem install simplecov-console
+
 script:
 - cucumber
 - rspec
 
-deploy:
-  provider: heroku
-  api_key:
-    secure: 7336f847-ab40-4b26-8f77-70dc595ff7bb
-  app: whispering-gorge-84323
-
-  
