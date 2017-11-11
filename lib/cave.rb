@@ -1,7 +1,7 @@
 Player = Struct.new(:x, :y)
 
-$NUMBER_ROWS = 10
-$NUMBER_COLUMNS = 10
+$NUMBER_ROWS = 5
+$NUMBER_COLUMNS = 5
 
 class Cave
   
@@ -13,9 +13,12 @@ class Cave
     
     @player = Player.new
     @wumpus = Player.new
+    @arrow = Player.new
     posRand = Random.new
     @player.x = posRand.rand(0..($NUMBER_ROWS - 1))
     @player.y = posRand.rand(0..($NUMBER_COLUMNS - 1))
+    @arrow.x=@player.x
+    @arrow.y=@player.y
     @wumpus.x = posRand.rand(0..($NUMBER_ROWS - 1))
     @wumpus.y = posRand.rand(0..($NUMBER_COLUMNS - 1))
     
@@ -53,7 +56,7 @@ class Cave
         return 2
       end
     elsif address == 'abajo'
-      if @player.x < 9
+      if @player.x < ($NUMBER_ROWS-1)
         resetRooms
         @player.x = @player.x + 1
         if updateRooms
@@ -71,7 +74,7 @@ class Cave
         return 2
       end
     else
-      if @player.y < 9
+      if @player.y < ($NUMBER_COLUMNS-1)
         resetRooms
         @player.y = @player.y + 1
         if updateRooms
@@ -97,6 +100,53 @@ class Cave
     return false
   end
   
+  def detectWumpus
+    if( ((@player.x+1)==@wumpus.x)|| ((@player.x-1)==@wumpus.x) || ((@player.y+1)==@wumpus.y) || ((@player.y-1)==@wumpus.y) )
+      return true
+    else
+      return false
+    end
+  end
+
+  def shootArrow
+    if address == 'arriba'
+      for i in @player.y..0
+        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
+          return true
+        else
+          @arrow.y=(@arrow.y-1)
+        end
+      end
+    elsif address == 'abajo'
+      for i in 0..@player.y
+        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
+          return true
+        else
+          @arrow.y=(@arrow.y+1)
+        end
+      end
+
+    elsif address == 'izquierda'
+      for i in @player.x..0
+        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
+          return true
+        else
+          @arrow.x=(@arrow.x-1)
+        end
+      end
+
+    else
+      for i in 0..@player.x
+        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
+          return true
+        else
+          @arrow.x=(@arrow.x+1)
+        end
+      end
+    end
+    return false
+  end
+
   def getPlayer
     return @player
   end

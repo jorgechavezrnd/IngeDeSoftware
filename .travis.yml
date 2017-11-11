@@ -2,7 +2,3 @@ language: ruby
 script:
   - cucumber
   - rspec
-deploy:
-  provider: heroku
-  api_key:
-    secure: whispering-gorge-84323

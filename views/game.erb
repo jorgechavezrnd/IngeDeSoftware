@@ -10,11 +10,20 @@
     }
   </script>
 <% end %>
+
 <table>
   <tr>
     <th>
-      <textarea name="informacion" rows="40" cols="50" disabled><%= @mensaje %></textarea>
+      <textarea name="informacion" rows="40" cols="50" disabled><%= @mensaje %>
+      <%= @MensajeEstado %></textarea>
     </th>
+
+    <th>
+      <% if  @detect == true  %>
+        <textarea name="informacion" rows="40" cols="50" disabled>Hay un olor en el aire, el wumpus está cerca</textarea>
+      <% end %>
+    </th>
+
     <th valign="top">
       <h2> Flechas: <%= @cantFlechas %> </h2>
       <form action="/action" method="post">
