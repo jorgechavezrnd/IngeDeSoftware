@@ -26,7 +26,9 @@
 <table>
   <tr>
     <th>
-      <textarea name="informacion" rows="40" cols="50" disabled><%= @mensaje %>
+      <textarea name="informacion" rows="40" cols="50" disabled>
+      <%= @MensajeF %>
+      <%= @mensaje %>
       <%= @MensajeEstado %></textarea>
     </th>
 
@@ -38,13 +40,12 @@
 
     <th valign="top">
       <h2> Flechas: <%= @cantFlechas %> </h2>
-      <% if @cantFlechas > 0 %>
         <form action="/action" method="post">
           <button name="accion" type="submit" value="disparar">Lanzar flecha</button>
+          <button name="accion" type="submit" value="moverse">Moverse</button>
         </form>
-      <% end %>
       <% if @disparo == true %>
-        <label>Donde quieres lanzarla?...</label>
+
         <form action="/shot" method="post">
           <button name="accion" type="submit" value="arriba">&#8593;</button>
           <button name="accion" type="submit" value="abajo">&#8595;</button>
@@ -52,12 +53,14 @@
           <button name="accion" type="submit" value="derecha">&#8594;</button>
         </form>
       <% end %>
-      <form action="/action" method="post">
+      <% if @moverse == true %>
+      <form action="/move" method="post">
         <button name="accion" type="submit" value="arriba">&#8593;</button>
         <button name="accion" type="submit" value="abajo">&#8595;</button>
         <button name="accion" type="submit" value="izquierda">&#8592;</button>
         <button name="accion" type="submit" value="derecha">&#8594;</button>
       </form>
+      <% end %>
     </th>
   </tr>
 </table>

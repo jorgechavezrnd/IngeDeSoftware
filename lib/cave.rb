@@ -1,7 +1,7 @@
 Player = Struct.new(:x, :y)
 
-$NUMBER_ROWS = 5
-$NUMBER_COLUMNS = 5
+$NUMBER_ROWS = 4
+$NUMBER_COLUMNS = 4
 
 class Cave
   
@@ -149,45 +149,6 @@ class Cave
       return 0
     end
     return -1
-  end
-  
-  def shootArrow
-    if address == 'arriba'
-      for i in @player.y..0
-        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
-          return true
-        else
-          @arrow.y=(@arrow.y-1)
-        end
-      end
-    elsif address == 'abajo'
-      for i in 0..@player.y
-        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
-          return true
-        else
-          @arrow.y=(@arrow.y+1)
-        end
-      end
-
-    elsif address == 'izquierda'
-      for i in @player.x..0
-        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
-          return true
-        else
-          @arrow.x=(@arrow.x-1)
-        end
-      end
-
-    else
-      for i in 0..@player.x
-        if((@arrow.y==@wumpus.y) && (@arrow.x==@wumpus.x))
-          return true
-        else
-          @arrow.x=(@arrow.x+1)
-        end
-      end
-    end
-    return false
   end
 
   def getPlayer
