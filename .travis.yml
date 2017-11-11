@@ -1,4 +1,8 @@
 language: ruby
 script:
-  - cucumber
-  - rspec
+- cucumber
+- rspec
+deploy:
+  api_key:
+    secure: EI+kCf4zXaqpBUL5Ja4cGa/8phkUs7G0Y/kYdLtzireXcFFF/bjmUn5xIHX9tVILjXneG24Pcx9doGB7sGAy1v853twftehiNXBnILxGw1tn7AzMO8JUIPZPKyJEv+a52H63ZDuVUIPI3KPVB+6EXAlB22N+8dXxRzONkmYzePp0H40khvsAZ2eXd+cv8TV1hbryT0XzcvtzB3hFtGgQxexxseBaJng20lJPhPhXBjqbnh3xdbkp9wQwtNI8dnWRJqXk4wbI8hoSBLfqU0CVZKrDtYFdgiP6+qxOAi+f4YyQSH8DKkRLnzfQZ0s7NteZRO5g/GQy9edeXhv1HuZjg7pLeCjp3zwXOiD556Zw5/3SC7bZeBf6P5o9JvCCrixG2xFYcrLLiVJcr8Bp82XJNWgwhaHFrZ/u1I+QrZRJwTftEgCb34E/vy53jGAWwPAUvrAOWSQfIU1IztHikKmHtGtHUrt9qovvnTfyVui2lbM+hUnrFxTVyLixhCWUTxAmgeV6jn5Dga+sa/tDJab4NPV+7jxEQNNy2JHax/i3QxADzyQ181Dl/4QJPh/TyR1SSQLb4sH1uPRFB7QC0TYjR8qG+DvFyZJIKny9C25zWKvLb058zw/c94k0x7ifm63oEpLz31/M2UGckhwbca1EcgxIeeQduOn9GtGIi5F6Z+o=
+  app: whispering-gorge-84323
