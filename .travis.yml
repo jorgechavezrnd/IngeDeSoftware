@@ -2,4 +2,7 @@ language: ruby
 script:
   - cucumber
   - rspec
-travis encrypt $(heroku auth:token) --add deploy.api_key
+deploy:
+  provider: heroku
+  api_key:
+    secure: travis encrypt $(heroku auth:token) --add deploy.api_key
