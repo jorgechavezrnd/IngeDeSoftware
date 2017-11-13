@@ -1,4 +1,4 @@
-<% if @perdiste == true %>
+<% if @youLose == true %>
   <script>
     if (window.confirm('El wumpus te encontró y decidió atacarte. Trataste de defenderte pero fue inútil. Fin del juego')) 
     {
@@ -10,7 +10,8 @@
     }
   </script>
 <% end %>
-<% if @ganaste == true %>
+
+<% if @youWin == true %>
   <script>
     if (window.confirm('Ganaste. Fin del juego')) 
     {
@@ -23,29 +24,29 @@
   </script>
 <% end %>
 
+
 <table>
   <tr>
     <th>
       <textarea name="informacion" rows="40" cols="50" disabled>
-      <%= @MensajeF %>
-      <%= @mensaje %>
-      <%= @MensajeEstado %></textarea>
-    </th>
+        <% if @wumpusAround == true %><%= @messageWumpusAround %><% end %>
+        <% if @shootfail == true %><%= @messageShootFail %><% end %><% if @arrowEmpty == true %><%= @messageArrowQuantity %><% end %><% if @wrongMove == true %><%= @messageNotMovement %><% end %>
+        <%= @playerPosition %>
+        <% if @action == true %><%= @messageAction %><% end %><% if @shoot == true %><%= @messageShootOption %><% end %><% if @move == true %><%= @messageMovementOption %><% end %>
+      </textarea>
 
-    <th>
-      <% if  @detect == true  %>
-        <textarea name="informacion" rows="40" cols="50" disabled>Hay un olor en el aire, el wumpus está cerca</textarea>
-      <% end %>
     </th>
 
     <th valign="top">
-      <h2> Flechas: <%= @cantFlechas %> </h2>
-        <form action="/action" method="post">
-          <button name="accion" type="submit" value="disparar">Lanzar flecha</button>
-          <button name="accion" type="submit" value="moverse">Moverse</button>
-        </form>
-      <% if @disparo == true %>
 
+      <h2> Flechas: <%= @numberArrow %> </h2>
+
+      <form action="/action" method="post">
+        <button name="accion" type="submit" value="disparar">Lanzar flecha</button>
+        <button name="accion" type="submit" value="moverse">Moverse</button>
+      </form>
+
+      <% if @shoot == true %>
         <form action="/shot" method="post">
           <button name="accion" type="submit" value="arriba">&#8593;</button>
           <button name="accion" type="submit" value="abajo">&#8595;</button>
@@ -53,16 +54,19 @@
           <button name="accion" type="submit" value="derecha">&#8594;</button>
         </form>
       <% end %>
-      <% if @moverse == true %>
-      <form action="/move" method="post">
-        <button name="accion" type="submit" value="arriba">&#8593;</button>
-        <button name="accion" type="submit" value="abajo">&#8595;</button>
-        <button name="accion" type="submit" value="izquierda">&#8592;</button>
-        <button name="accion" type="submit" value="derecha">&#8594;</button>
-      </form>
+
+      <% if @move == true %>
+        <form action="/move" method="post">
+          <button name="accion" type="submit" value="arriba">&#8593;</button>
+          <button name="accion" type="submit" value="abajo">&#8595;</button>
+          <button name="accion" type="submit" value="izquierda">&#8592;</button>
+          <button name="accion" type="submit" value="derecha">&#8594;</button>
+        </form>
       <% end %>
+
     </th>
   </tr>
+
 </table>
 <form action="/action" method="post">
   <button name="accion" type="submit" value="salir">Salir</button>
