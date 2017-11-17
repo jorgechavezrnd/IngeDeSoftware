@@ -14,3 +14,7 @@ script:
 - cucumber
 - rspec
 
+deploy: &heroku
+        provider: heroku
+        app: cryptic-anchorage-95686
+        api_key: $HEROKU_AUTH_TOKEN
