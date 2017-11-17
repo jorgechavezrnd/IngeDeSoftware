@@ -1,20 +1,18 @@
 language: ruby
-
 before_install:
-  - gem install sinatra
-  - gem install rspec
-  - gem install cucumber
-  - gem install rack-test
-  - gem install webrat
-  - gem install rspec
-  - gem install simplecov
-  - gem install simplecov-console
-
+- gem install sinatra
+- gem install rspec
+- gem install cucumber
+- gem install rack-test
+- gem install webrat
+- gem install rspec
+- gem install simplecov
+- gem install simplecov-console
 script:
 - cucumber
 - rspec
-
-deploy: &heroku
-        provider: heroku
-        app: cryptic-anchorage-95686
-        api_key: $HEROKU_AUTH_TOKEN
+deploy:
+  provider: heroku
+  app: cryptic-anchorage-95686
+  api_key:
+    secure: LhObolW21nueWFmGijw18yGd7OQmU9rhkpUh77czLQJlfOJqTCtVsatrIz0GRcbvnt5vEbQOLTwI8Q0vPCm0y8M6o2GXC3tWThBivWinIzeQo8eRjk/4PC2K3Fhlw+4zQTW5xcBfbYMaomnY3LbXC1BDh0aXGHca2lkYt+qphfUAqnhrTkSRISHN3MY0D2CH034ZNr7EACLBtWVWJndqMOAcogl3x8joY+ZU7ReUduRi45TvwZaPcoQVu6gmw0tgQP495lKX+n5+gC9Rw9UJhEf5avB4I3U/i6pjy/Vc1ypgKO2ctIxaCJMN7HcX7/dXGZpEiiuQJX5/J7OtfKK0hHKleIMSTr/iMrZIx0uMlv2I8oPaaEtbwCOg5/yy6ONEH0M6I8wew9bOsV+slgaHSmMGX6GHlzKJ4qUKJt1nNmnYjpeBbF8YEoXT9qByw1XjjYhjxRKmPqh7qJXPCPbo0UeIohIYhyZmvOA9Jri94qhVl34wyWkyi8jpw9afIbAEJG7b4l/+2+ZObuehLKVB3IQ9m6C2d5QNH04TouYx2BmEv1CsrOCIiJRP1vFAaeX8qiPiRe0xZO+4Qyp0+K4ZKmlgWXyC83hHf0OByOYSQSRwvSRDnV/8/9pB2kcKIHrAYbtaItARWgObgIHFUASyMJZzhOMqM8d/9p5lqNiPEaQ=
