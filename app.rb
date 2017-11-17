@@ -1,7 +1,5 @@
 require 'sinatra'
 require './lib/cave'
-set :bind, '0.0.0.0'
-set :port, 3000
 
 $CAVE = Cave.new
 $LOSE = false
