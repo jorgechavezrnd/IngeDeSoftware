@@ -129,6 +129,66 @@ class Cave
     setRoom(@room,3,3)
   end
 
+  def generateWallsDefaultMediumlMap
+    @room=getRoom(0,0)
+    @room.OpenEntryEast
+    setRoom(@room,0,0)
+    @room=getRoom(1,0)
+    @room.OpenEntrySouth
+    @room.OpenEntryEast
+    @room.OpenEntryWest
+    setRoom(@room,1,0)
+    @room=getRoom(2,0)
+    @room.OpenEntryWest
+    @room.OpenEntryEast
+    setRoom(@room,2,0)
+    @room=getRoom(3,0)
+    @room.OpenEntryWest
+    @room.OpenEntrySouth
+    setRoom(@room,3,0)
+    @room=getRoom(5,0)
+    @room.OpenEntryEast
+    @room.OpenEntrySouth
+    setRoom(@room,5,0)
+    @room=getRoom(6,0)
+    @room.OpenEntryEast
+    @room.OpenEntryWest
+    setRoom(@room,6,0)
+    @room=getRoom(7,0)
+    @room.OpenEntryWest
+    setRoom(@room,7,0)
+    @room=getRoom(0,1)
+    @room.OpenEntrySouth
+    setRoom(@room,0,1)
+    @room=getRoom(1,1)
+    @room.OpenEntryNorth
+    setRoom(@room,1,1)
+    @room=getRoom(2,1)
+    @room.OpenEntrySouth
+    setRoom(@room,2,1)
+    @room=getRoom(3,1)
+    @room.OpenEntryNorth
+    @room.OpenEntrySouth
+    @room.OpenEntryEast
+    setRoom(@room,3,1)
+    @room=getRoom(4,1)
+    @room.OpenEntryEast
+    @room.OpenEntryWest
+    setRoom(@room,4,1)
+    @room=getRoom(5,1)
+    @room.OpenEntryNorth
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    setRoom(@room,5,1)
+    @room=getRoom(6,1)
+    @room.OpenEntrySouth
+    setRoom(@room,6,1)
+    @room=getRoom(7,1)
+    @room.OpenEntryNorth
+    @room.OpenEntrySouth
+    setRoom(@room,7,1)
+  end
+  
   def quantityOfRooms
     return @numberRows*@numberCols
   end
