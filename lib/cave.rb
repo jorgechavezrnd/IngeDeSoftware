@@ -37,6 +37,7 @@ class Cave
     @numberRows=8
     @numberCols=8
     generateMap(@numberRows,@numberCols)
+
   end
 
   def createDefaultBigMap
@@ -53,11 +54,9 @@ class Cave
 
   def generateMap(numberRows,numberCols)
     @rooms=Array.new(numberRows)
-
     for i in 0..(numberRows - 1)
       @rooms[i] = Array.new(numberCols - 1)
     end
-
     for i in 0..(numberRows - 1)
       for j in 0..(numberCols - 1)
         @rooms[i][j] = Room.new
@@ -66,90 +65,68 @@ class Cave
   end
 
   def generateWallsDefaultSmallMap
-
     @room=getRoom(0,0)
     @room.OpenEntrySouth
     @room.OpenEntryEast
     setRoom(@room,0,0)
-
     @room=getRoom(0,1)
     @room.OpenEntryNorth
     setRoom(@room,0,1)
-
     @room=getRoom(0,2)
     @room.OpenEntryEast
     setRoom(@room,0,2)
-
     @room=getRoom(0,3)
     @room.OpenEntryEast
     setRoom(@room,0,3)
-
-
     @room=getRoom(1,0)
     @room.OpenEntryWest
     @room.OpenEntryEast
     setRoom(@room,1,0)
-
-    @room=getRoom(2,0)
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    @room.OpenEntryEast
-    setRoom(@room,2,0)
-
-    @room=getRoom(3,0)
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    setRoom(@room,3,0)
-
     @room=getRoom(1,1)
     @room.OpenEntryEast
     setRoom(@room,1,1)
-
-    @room=getRoom(2,1)
-    @room.OpenEntryNorth
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    setRoom(@room,2,1)
-
-    @room=getRoom(3,1)
-    @room.OpenEntryNorth
-    setRoom(@room,3,1)
-
-    
-
     @room=getRoom(1,2)
     @room.OpenEntrySouth
     @room.OpenEntryWest
     @room.OpenEntryEast
     setRoom(@room,1,2)
-
+    @room=getRoom(1,3)
+    @room.OpenEntryNorth
+    @room.OpenEntryWest
+    setRoom(@room,1,3)
+    @room=getRoom(2,0)
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    @room.OpenEntryEast
+    setRoom(@room,2,0)
+    @room=getRoom(2,1)
+    @room.OpenEntryNorth
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    setRoom(@room,2,1)
     @room=getRoom(2,2)
     @room.OpenEntryNorth
     @room.OpenEntrySouth
     @room.OpenEntryWest
     @room.OpenEntryEast
     setRoom(@room,2,2)
-
+    @room=getRoom(2,3)
+    @room.OpenEntryNorth
+    setRoom(@room,2,3)
+    @room=getRoom(3,0)
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    setRoom(@room,3,0)
+    @room=getRoom(3,1)
+    @room.OpenEntryNorth
+    setRoom(@room,3,1)
     @room=getRoom(3,2)
     @room.OpenEntrySouth
     @room.OpenEntryWest
     setRoom(@room,3,2)
-
-   
-
-    @room=getRoom(1,3)
-    @room.OpenEntryNorth
-    @room.OpenEntryWest
-    setRoom(@room,1,3)
-
-    @room=getRoom(2,3)
-    @room.OpenEntryNorth
-    setRoom(@room,2,3)
-
     @room=getRoom(3,3)
     @room.OpenEntryNorth
     setRoom(@room,3,3)
-
   end
 
   def quantityOfRooms

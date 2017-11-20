@@ -1,7 +1,7 @@
 class Room
 
    def initialize
-      
+
    		@entries = [0,0,0,0]
          @wumpus = false
          @player = false
@@ -125,22 +125,25 @@ class Room
    def OpenEntryWest
    		@entries[3]=1
    end
+   
    def CloseEntryWest
    		@entries[3]=0
    end
 
    
    def northOpen
-         return (@entries[0]==1)
+         return @entries[0]==1
    end
    def southOpen
-         return (@entries[1]==1)
+         return @entries[1]==1
    end
+
    def eastOpen
-         return (@entries[2]==1)
+         return @entries[2]==1
    end
+
    def westOpen
-         return (@entries[3]==1)
+         return @entries[3]==1
    end
    
 
@@ -155,7 +158,5 @@ class Room
    			return westOpen
    		end
    end
-
-   
 
 end
