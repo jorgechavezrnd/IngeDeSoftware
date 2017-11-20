@@ -1,230 +1,217 @@
-Player = Struct.new(:x, :y)
-
-$NUMBER_ROWS = 4
-$NUMBER_COLUMNS = 4
-$NUMBER_ARROW = 3
-
+require './lib/room'
 class Cave
-  
+
   def initialize
-
-    @rooms = Array.new($NUMBER_ROWS)
-    for i in 0..($NUMBER_ROWS - 1)
-      @rooms[i] = Array.new($NUMBER_COLUMNS)
+    @numberCols = 0
+    @numberRows = 0 
+    @rooms=Array.new(1)
+    for i in 0..1
+      @rooms[i] = Array.new(1)
     end
+  end
+
+  def setNumberCols(numberCols)
+    @numberCols=numberCols
+  end
+
+  def setNumberRows(numberRows)
+    @numberRows=numberRows
+  end
+
+  def getNumberCols
+    return @numberCols
+  end
+
+  def getNumberRows
+    return @numberRows
+  end
+
+  def createDefaultSmallMap
+    @numberRows=4
+    @numberCols=4
+    generateMap(@numberRows,@numberCols)
+    generateWallsDefaultSmallMap
+  end
+
+  def createDefaultMediumMap
+    @numberRows=8
+    @numberCols=8
+    generateMap(@numberRows,@numberCols)
+  end
+
+  def createDefaultBigMap
+    @numberRows=12
+    @numberCols=12
+    generateMap(@numberRows,@numberCols)
+  end
+
+  def createEditedMap(numberRows,numberCols)
+    @numberCols=numberCols
+    @numberRows=numberRows
+    generateMap(@numberRows,@numberCols)
+  end
+
+  def generateMap(numberRows,numberCols)
+    @rooms=Array.new(numberRows)
+
+    for i in 0..(numberRows - 1)
+      @rooms[i] = Array.new(numberCols - 1)
+    end
+
+    for i in 0..(numberRows - 1)
+      for j in 0..(numberCols - 1)
+        @rooms[i][j] = Room.new
+      end
+    end
+  end
+
+  def generateWallsDefaultSmallMap
+
+    @room=getRoom(0,0)
+    @room.OpenEntrySouth
+    @room.OpenEntryEast
+    setRoom(@room,0,0)
+
+    @room=getRoom(0,1)
+    @room.OpenEntryNorth
+    setRoom(@room,0,1)
+
+    @room=getRoom(0,2)
+    @room.OpenEntryEast
+    setRoom(@room,0,2)
+
+    @room=getRoom(0,3)
+    @room.OpenEntryEast
+    setRoom(@room,0,3)
+
+
+    @room=getRoom(1,0)
+    @room.OpenEntryWest
+    @room.OpenEntryEast
+    setRoom(@room,1,0)
+
+    @room=getRoom(2,0)
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    @room.OpenEntryEast
+    setRoom(@room,2,0)
+
+    @room=getRoom(3,0)
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    setRoom(@room,3,0)
+
+    @room=getRoom(1,1)
+    @room.OpenEntryEast
+    setRoom(@room,1,1)
+
+    @room=getRoom(2,1)
+    @room.OpenEntryNorth
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    setRoom(@room,2,1)
+
+    @room=getRoom(3,1)
+    @room.OpenEntryNorth
+    setRoom(@room,3,1)
+
     
-    @player = Player.new
-    @wumpus = Player.new
-    @arrow = Player.new
-    posRand = Random.new
 
-    @player.x = posRand.rand(0..($NUMBER_ROWS - 1))
-    @player.y = posRand.rand(0..($NUMBER_COLUMNS - 1))
-    @arrow.x=@player.x
-    @arrow.y=@player.y
-    @wumpus.x = posRand.rand(0..($NUMBER_ROWS - 1))
-    @wumpus.y = posRand.rand(0..($NUMBER_COLUMNS - 1))
-    @numberArrows=$NUMBER_ARROW
+    @room=getRoom(1,2)
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    @room.OpenEntryEast
+    setRoom(@room,1,2)
 
-    if (@player.x == @wumpus.x) && (@player.y == @wumpus.y)
-      same_position = true
-      while same_position == true
-        @wumpus.x = posRand.rand(0..($NUMBER_ROWS - 1))
-        @wumpus.y = posRand.rand(0..($NUMBER_COLUMNS - 1))
-        if (@player.x == @wumpus.x) && (@player.y == @wumpus.y)
-          same_position = true
-        else
-          same_position = false
-        end
-      end
-    end
-    
-    for i in 0..($NUMBER_ROWS - 1)
-      for j in 0..($NUMBER_COLUMNS - 1)
-        @rooms[i][j] = 0
-      end
-    end
-    
-    @rooms[@player.x][@player.y] = 1
-    @rooms[@wumpus.x][@wumpus.y] = 2
+    @room=getRoom(2,2)
+    @room.OpenEntryNorth
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    @room.OpenEntryEast
+    setRoom(@room,2,2)
+
+    @room=getRoom(3,2)
+    @room.OpenEntrySouth
+    @room.OpenEntryWest
+    setRoom(@room,3,2)
+
+   
+
+    @room=getRoom(1,3)
+    @room.OpenEntryNorth
+    @room.OpenEntryWest
+    setRoom(@room,1,3)
+
+    @room=getRoom(2,3)
+    @room.OpenEntryNorth
+    setRoom(@room,2,3)
+
+    @room=getRoom(3,3)
+    @room.OpenEntryNorth
+    setRoom(@room,3,3)
 
   end
 
-  def resetRooms
-    @rooms[@player.x][@player.y] = 0
-    @rooms[@wumpus.x][@wumpus.y] = 0
+  def quantityOfRooms
+    return @numberRows*@numberCols
   end
+
+  def getRoom(positionX,positionY)
+    return @rooms[positionX][positionY]
+  end
+
+  def setRoom(room,positionX,positionY)
+    @rooms[positionX][positionY]=room
+  end
+
+  def movePlayerToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.setPlayerStay
+    setRoom(@room,positionX,positionY)
+  end
+
+  def moveWumpusToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.setWumpusStay
+    setRoom(@room,positionX,positionY)
+  end
+
+  def moveBatsToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.setBatsStay
+    setRoom(@room,positionX,positionY)
+  end
+
+  def moveArrowToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.setArrowStay
+    setRoom(@room,positionX,positionY)
+  end
+
+  def putArrowToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.incrementArrowQuantity
+    setRoom(@room,positionX,positionY)
+  end
+
+  def removeArrowToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.decreaseArrowQuantity
+    setRoom(@room,positionX,positionY)
+  end
+
+  def putWaterWellToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.setWaterWellStay
+    setRoom(@room,positionX,positionY)
+  end
+
+  def putBreezeToRoom(positionX,positionY)
+    @room=getRoom(positionX,positionY)
+    @room.setBreezeStay
+    setRoom(@room,positionX,positionY)
+  end
+
   
-  def updateRooms
-    @rooms[@player.x][@player.y] = 1
-    @rooms[@wumpus.x][@wumpus.y] = 2
-    if (@player.x == @wumpus.x) && (@player.y == @wumpus.y)
-      return true
-    end
-    return false
-  end
-  
-
-  def movePlayer(address)
-    
-    if address == 'arriba'
-          if @player.x > 0
-            resetRooms
-            @player.x = @player.x - 1
-            return true
-          end
-        elsif address == 'abajo'
-          if @player.x < ($NUMBER_ROWS-1)
-            resetRooms
-            @player.x = @player.x + 1
-            return true
-          end
-        elsif address == 'izquierda'
-          if @player.y > 0
-            resetRooms
-            @player.y = @player.y - 1
-            return true
-          end
-        else
-          if @player.y < ($NUMBER_COLUMNS-1)
-            resetRooms
-           @player.y = @player.y + 1
-           return true
-        end
-      end
-      return false
-  end
-
-  def verifyDeath
-    return updateRooms
-  end
-
-  def detectWumpus
-    if( ((@player.x+1)==@wumpus.x)|| ((@player.x-1)==@wumpus.x) || ((@player.y+1)==@wumpus.y) || ((@player.y-1)==@wumpus.y) )
-      return true
-    else
-      return false
-    end
-  end
-
-  def shotArrow(address)
-
-    @arrow  = Player.new
-    @arrow.x = @player.x
-    @arrow.y = @player.y
-    if(@numberArrows>0)
-      reduceArrows
-    end
-    if address == 'arriba'
-      while @arrow.x >= 0 do
-        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
-          return true
-        end
-        @arrow.x = @arrow.x - 1
-      end
-    end
-    if address == 'abajo'
-      while @arrow.x < $NUMBER_ROWS do
-        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
-          return true
-        end
-        @arrow.x = @arrow.x + 1
-      end
-    end
-    if address == 'izquierda'
-      while @arrow.y >= 0 do
-        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
-          return true
-        end
-        @arrow.y = @arrow.y - 1
-      end
-    end
-    if address == 'derecha'
-      while @arrow.y < $NUMBER_COLUMNS do
-        if @arrow.x == @wumpus.x && @arrow.y == @wumpus.y
-          return true
-        end
-        @arrow.y = @arrow.y + 1
-      end
-    end
-    return false
-  end
-
-  def getPlayer
-    return @player
-  end
-  
-  def getRooms
-    return @rooms
-  end
-
-  def getWumpus
-    return @wumpus
-  end
-  
-  def getPlayerPosition
-      return "
-    Te encuentras en la habitacion " + ((($NUMBER_COLUMNS)*$CAVE.getPlayer.x) + ($CAVE.getPlayer.y+1)).to_s
-  end
-
-  def getNumberArrow
-    return @numberArrows.to_s
-  end
-
-  def verifyArrows
-    if(@numberArrows==0)
-      return true
-    end
-    return false
-  end
-
-  def showMessageAction
-    return "
-    Que accion quieres realizar? 
-    * Moverse
-    * Lanzar flecha"
-  end
-
-  def showMessageEmptyArrow
-    return "
-    No tiene flechas que disparar"
-  end
-
-  def showMessageNotMovement
-    return "
-    No puedes moverte por ahi"
-  end
-
-  def showMessageShoot
-    return "
-    A donde desea disparar?
-    * Norte
-    * Sur
-    * Este
-    * Oeste"
-  end
-
-  def showMessageMove 
-    return "
-    A donde desea moverse?
-    * Norte
-    * Sur
-    * Este
-    * Oeste"
-  end
-
-  def showMessageMissingArrow
-    return "
-    La flecha se pierde de tu vista"
-  end
-
-  def reduceArrows
-    @numberArrows-=1
-  end
-
-  def showMessageWumpusAround
-    return "
-    Hay un olor en el aire, el wumpus está cerca"
-  end
-
 end
+
