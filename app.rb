@@ -1,7 +1,8 @@
 require 'sinatra'
-require './lib/cave'
+require './lib/game'
 
-$CAVE = Cave.new
+$GAME = Game.new
+$GAME.newDefaultGame(true, 'small')
 $LOSE = false
 $WIN = false
 
@@ -15,7 +16,8 @@ $WUMPUSAROUND = false
 
 get '/' do
 
-  $CAVE = Cave.new
+  $GAME = Game.new
+  $GAME.newDefaultGame(true, 'small')
   $LOSE = false
   $WIN = false
   
@@ -32,7 +34,7 @@ end
 
 get '/game' do
 
-  if $CAVE.detectWumpus
+  if $GAME.detectWumpus
     $WUMPUSAROUND = true
   end
   
@@ -54,16 +56,16 @@ get '/game' do
   $EMPTYARROWS = false
   $WUMPUSAROUND = false
 
-  @playerPosition = $CAVE.getPlayerPosition
-  @numberArrow = $CAVE.getNumberArrow
-  @messageArrowQuantity=$CAVE.showMessageEmptyArrow
+  @playerPosition = $GAME.getPlayerPositionMessage
+  @numberArrow = $GAME.getNumberArrow
+  @messageArrowQuantity=$GAME.showMessageEmptyArrow
   
-  @messageAction=$CAVE.showMessageAction
-  @messageMovementOption = $CAVE.showMessageMove
-  @messageShootOption = $CAVE.showMessageShoot
-  @messageNotMovement = $CAVE.showMessageNotMovement
-  @messageShootFail = $CAVE.showMessageMissingArrow
-  @messageWumpusAround = $CAVE.showMessageWumpusAround
+  @messageAction=$GAME.showMessageAction
+  @messageMovementOption = $GAME.showMessageMove
+  @messageShootOption = $GAME.showMessageShoot
+  @messageNotMovement = $GAME.showMessageNotMovement
+  @messageShootFail = $GAME.showMessageMissingArrow
+  @messageWumpusAround = $GAME.showMessageWumpusAround
 
   erb :game
 
@@ -73,18 +75,19 @@ end
 post '/action' do
 
   if params[:accion] == 'salir'
-    $CAVE = Cave.new
+    $GAME = Game.new
+    $GAME.newDefaultGame(true, 'small')
     redirect "/"
   elsif params[:accion] == 'disparar'
-    if(!$CAVE.verifyArrows)
-      if $CAVE.detectWumpus
+    if($GAME.haveArrows)
+      if $GAME.detectWumpus
         $WUMPUSAROUND = true
       end
       $SHOOT = true
       $MOVE = false
       $ACTION = false
     else
-      if $CAVE.detectWumpus
+      if $GAME.detectWumpus
         $WUMPUSAROUND = true
       end
       $MOVE = false
@@ -92,7 +95,7 @@ post '/action' do
       $EMPTYARROWS=true
     end
   elsif params[:accion] == 'moverse'
-    if $CAVE.detectWumpus
+    if $GAME.detectWumpus
       $WUMPUSAROUND = true
     end
     $MOVE = true
@@ -104,7 +107,7 @@ end
 
 
 post '/shot' do
-
+=begin
   resultAction = $CAVE.shotArrow(params[:accion])
 
   if resultAction == false
@@ -113,25 +116,26 @@ post '/shot' do
     $SHOOT= false
     $MOVE = false
   else
-    $CAVE = Cave.new
+    $GAME = Game.new
     $WIN = true
   end
-
+=end
   redirect "/game"
 
 end
 
 
 post '/move' do
-  resultAction = $CAVE.movePlayer(params[:accion])
-  if $CAVE.verifyDeath == true
-    $CAVE = Cave.new
+  resultAction = $GAME.movePlayer(params[:accion])
+  if $GAME. == true
+    $GAME = Game.new
+    $GAME.newDefaultGame(true, 'small')
     $LOSE = true
   else
     if resultAction == false
       $WRONGMOVE= true
     end
-    if $CAVE.detectWumpus
+    if $GAME.detectWumpus
       $WUMPUSAROUND = true
     end
     $ACTION= true
