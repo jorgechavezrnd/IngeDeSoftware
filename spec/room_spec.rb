@@ -1,35 +1,37 @@
 require './lib/room'
 describe Room do
+
  	before(:each) do
 		@room=Room.new
 	end
+
 	it "deberia devolver falso si la entrada Norte esta cerrada" do
-		expect(@room.northOpen).to eq(false)
+		expect(@room.EntryOpen('North')).to eq(false)
 	end
 	it "deberia devolver falso si la entrada Sur esta cerrada" do
-		expect(@room.southOpen).to eq(false)
+		expect(@room.EntryOpen('South')).to eq(false)
 	end
 	it "deberia devolver falso si la entrada Este esta cerrada" do
-		expect(@room.eastOpen).to eq(false)
+		expect(@room.EntryOpen('East')).to eq(false)
 	end
 	it "deberia devolver falso si la entrada Oeste esta cerrada" do
-		expect(@room.westOpen).to eq(false)
+		expect(@room.EntryOpen('West')).to eq(false)
 	end
 	it "deberia devolver verdadero si la entrada Norte esta abierta" do
 		@room.OpenEntryNorth
-		expect(@room.northOpen).to eq(true)
+		expect(@room.EntryOpen('North')).to eq(true)
 	end
 	it "deberia devolver verdadero si la entrada Sur esta abierta" do
 		@room.OpenEntrySouth
-		expect(@room.southOpen).to eq(true)
+		expect(@room.EntryOpen('South')).to eq(true)
 	end
 	it "deberia devolver verdadero si la entrada Este esta abierta" do
 		@room.OpenEntryEast
-		expect(@room.eastOpen).to eq(true)
+		expect(@room.EntryOpen('East')).to eq(true)
 	end
 	it "deberia devolver verdadero si la entrada Oeste esta abierta" do
 		@room.OpenEntryWest
-		expect(@room.westOpen).to eq(true)
+		expect(@room.EntryOpen('West')).to eq(true)
 	end
 
 	it "deberia devolver falso si el jugador no esta en la habitacion" do
@@ -77,6 +79,8 @@ describe Room do
 
 	it "deberia devolver la cantidad de flechas en la habitacion" do
 		@room.incrementArrowQuantity
+		@room.incrementArrowQuantity
+		@room.decreaseArrowQuantity
 		expect(@room.QuantityArrowHere).to eq(1)
 	end
 

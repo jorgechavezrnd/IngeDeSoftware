@@ -1,6 +1,7 @@
 require './lib/player'
 require './lib/cave'
 require './lib/room'
+
 class Game
 	def initialize
 		@cave = Cave.new
@@ -12,6 +13,14 @@ class Game
 		@RemainingTurnsBats = 0
 		@wumpusMove = false
 		@QuantitySpray = 0
+	end
+
+	def getCave
+		return @cave
+	end
+
+	def setCave(cave)
+		@cave=cave
 	end
 
 	def newDefaultGame(wumpusMove, typeOfMap)
@@ -26,6 +35,10 @@ class Game
 		@QuantityArrows = 3
 		@QuantitySpray = 1
 		TypeOfDefaultMap(typeOfMap)
+	end
+
+	def getRemainingTurnBats
+		return @RemainingTurnsBats
 	end
 
 	def TypeOfDefaultMap(typeOfMap)
@@ -84,7 +97,7 @@ class Game
 	end
 
 	def getWumpusPosition
-		return ((@cave.getNumberRows)*@player.getPositionY) + (@player.getPositionX+1) 
+		return ((@cave.getNumberRows)*@wumpus.getPositionY) + (@wumpus.getPositionX+1) 
 	end
 
 	def realizeMovement(oldPositionX,oldPositionY,newPositionX,newPositionY)
