@@ -188,7 +188,7 @@ class Cave
     @room.OpenEntrySouth
     setRoom(@room,7,1)
   end
-  
+
   def quantityOfRooms
     return @numberRows*@numberCols
   end
@@ -251,4 +251,3 @@ class Cave
 
   
 end
-
