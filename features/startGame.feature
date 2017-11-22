@@ -5,8 +5,8 @@ Feature:  Como jugador
 Scenario:
           Given visito la pagina de inicio
           Then deberia mostrarme "Wumpus Labyrinth"
-          
+
 Scenario:
           Given visito la pagina de inicio
           When presiono el boton "Jugar"
-          Then deberia mostrarme la pantalla del juego
+          Then deberia mostrarme "Te encuentras en la habitacion 1"

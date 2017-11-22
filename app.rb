@@ -91,7 +91,7 @@ end
 
 
 post '/shot' do
-  resultAction = $GAME.shotArrow(params[:accion])
+  resultAction = $GAME.shotArrow(params[:direccion])
   if resultAction == false
     $SHOOTFAIL=true
     $ACTION= true
@@ -106,7 +106,7 @@ end
 
 
 post '/move' do
-  resultAction = $GAME.movePlayer(params[:accion])
+  resultAction = $GAME.movePlayer(params[:direccion])
   if $GAME.YourLose == true
     $GAME = Game.new
     $GAME.newDefaultGame(true, 'small')

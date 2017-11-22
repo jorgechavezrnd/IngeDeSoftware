@@ -5,4 +5,5 @@ Feature:  Como jugador
 Scenario:
           Given visito la pantalla del juego
           When presiono el boton "Salir"
-          Then deberia volver al menu principal
+          Then deberia devolverme la menu principal 
+          And mostrarme "Wumpus Labyrinth"
