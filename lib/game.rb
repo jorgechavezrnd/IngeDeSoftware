@@ -179,15 +179,15 @@ class Game
 			@direction='South'
 		elsif (@randomDecision==2)
 			@direction='East'
-		else
+		elsif (@randomDecision==3)
 			@direction='West'
 		end
 		return @direction
 	end
 
 	def MoveBat
+		@moveSuccessful=false
 		if(@RemainingTurnsBats == 0 && @bats.PlayerAlive)
-			@moveSuccessful=false
 			while (@moveSuccessful==false) do
 				@randomDecision=Random.new
 				@randomDecision.rand(0..3)
@@ -202,8 +202,9 @@ class Game
 	end
 
 	def MoveWumpus
+		@moveSuccessful=false
 		if(@wumpus.PlayerAlive)
-			@moveSuccessful=false
+			
 			while (@moveSuccessful==false) do
 				@randomDecision=Random.new
 				@randomDecision.rand(0..3)
@@ -214,6 +215,7 @@ class Game
 				end
 			end
 		end
+		return @moveSuccessful
 	end
 
 	def movePlayer(direction)

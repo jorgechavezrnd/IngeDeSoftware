@@ -105,9 +105,86 @@ describe Game do
 		expect(@game.getNumberArrow).to eq('0')
 	end
 
-end 
+	it "deberia devolver verdadero si perdi el juego" do
+		@game.newDefaultGame(false, 'small')
+		@wumpus=@game.getWumpus
+		@game.setPlayer(@wumpus)
+		expect(@game.YourLose).to eq(true)
+	end
 
+	it "deberia devolver falso si no perdi el juego" do
+		@game.newDefaultGame(false, 'small')
+		expect(@game.YourLose).to eq(false)
+	end
+
+	it "deberia devolver verdadero si el jugador se movio" do
+		@game.newDefaultGame(false, 'small')
+		expect(@game.movePlayer('South')).to eq(true)
+	end
+
+	it "deberia devolver falso si el jugador no se movio" do
+		@game.newDefaultGame(false, 'small')
+		expect(@game.movePlayer('North')).to eq(false)
+	end
+
+	it "deberia devolver verdadero si el wumpus se encuentra a mi alrededor" do
+		@game.newDefaultGame(false, 'small')
+		@wumpus=@game.getWumpus
+		@player=@game.getPlayer
+		@wumpus.setPositionX(@player.getPositionX+1)
+		@wumpus.setPositionY(@player.getPositionY)
+		@game.setWumpus(@wumpus)
+		expect(@game.detectWumpus).to eq(true)
+	end
+
+	it "deberia devolver falso si el no se encuentra a mi alrededor" do
+		@game.newDefaultGame(false, 'small')
+		expect(@game.detectWumpus).to eq(false)
+	end
+
+	it "deberia devolver verdadero si la flecha se disparo y le dio al wumpus" do
+		@game.newDefaultGame(false, 'small')
+		@wumpus=@game.getWumpus
+		@player=@game.getPlayer
+		@wumpus.setPositionX(@player.getPositionX+1)
+		@wumpus.setPositionY(@player.getPositionY)
+		@game.setWumpus(@wumpus)
+		expect(@game.shotArrow('East')).to eq(true)
+	end
+
+	it "deberia devolver falso si la flecha se disparo y no le dio al wumpus" do
+		@game.newDefaultGame(false, 'small')
+		expect(@game.shotArrow('South')).to eq(false)
+	end
 =begin
-	100 monedas al matarlo
-	monstruo y murcielagos estaticos o se mueven
+	it "deberia devolver 10 si el murcielago se movio" do
+		@game.newDefaultGame(false, 'small')
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.dismissTurnsBats
+		@game.MoveBat
+		expect(@game.getRemainingTurnBats).to eq(10)
+	end
+
+	it "deberia devolver verdadero si el wumpus se movio" do
+		@game.newDefaultGame(false, 'small')
+		expect(@game.MoveWumpus).to eq(true)
+	end
+
+	it "deberia devolver falso si el wumpus no se movio" do
+		@game.newDefaultGame(false, 'small')
+		@wumpus=@game.getWumpus
+		@wumpus.setPlayerStatus
+		@game.setWumpus(@wumpus)
+		expect(@game.MoveWumpus).to eq(false)
+	end
 =end
+	
+end
