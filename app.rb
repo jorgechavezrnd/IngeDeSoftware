@@ -24,6 +24,10 @@ get '/' do
   erb :index
 end
 
+get '/views/index.css' do
+  return index.css
+end
+
 get '/options' do
   erb :options
 end

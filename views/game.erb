@@ -48,10 +48,15 @@
         <% if @detectArrow == true %><%= @detectArrowMessage %><% end %>
         <% if @detectBreeze == true %><%= @messageBreeze %><% end %>
         <% if @detectBats == true %><%= @detectBatsMessage %><% end %>
-        <% if @useSpray == true %><%= @useSprayMessage %><% end %><% if @moveRandom == true %><%= @randomMovementByBatsMessage %><% end %>
-        <% if @shootfail == true %><%= @messageShootFail %><% end %><% if @arrowEmpty == true %><%= @messageArrowQuantity %><% end %><% if @wrongMove == true %><%= @messageNotMovement %><% end %>
+        <% if @useSpray == true %><%= @useSprayMessage %><% end %>
+        <% if @moveRandom == true %><%= @randomMovementByBatsMessage %><% end %>
+        <% if @shootfail == true %><%= @messageShootFail %><% end %>
+        <% if @arrowEmpty == true %><%= @messageArrowQuantity %><% end %>
+        <% if @wrongMove == true %><%= @messageNotMovement %><% end %>
         <%= @playerPosition %>
-        <% if @action == true %><%= @messageAction %><% end %><% if @shoot == true %><%= @messageShootOption %><% end %><% if @move == true %><%= @messageMovementOption %><% end %>
+        <% if @action == true %><%=@messageAction%><% end %>
+        <% if @shoot == true %><%=@messageShootOption%><% end %>
+        <% if @move == true %><%=@messageMovementOption%><% end %>
       </textarea>
 
     </th>

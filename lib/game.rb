@@ -153,23 +153,23 @@ class Game
 
 	def showMessageWumpusAround
 	    return "
-	    Hay un olor en el aire, el wumpus está cerca"
+  Hay un olor en el aire, el wumpus está cerca"
   	end
 
   	def showMessageMissingArrow
 		return "
-		La flecha se pierde de tu vista"
+      La flecha se pierde de tu vista"
   	end
 
   	def showMessageMove
   		@message="
-  		A donde desea moverse?" 
+  	  A donde desea moverse?" 
 	    return getPossibleMovements(@message)
   	end
 
   	def showMessageShoot
   		@message="
-  		A donde desea disparar?" 
+        A donde desea disparar?" 
     	return getPossibleMovements(@message)
   	end
 
@@ -177,19 +177,19 @@ class Game
   		@room=@cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
   		if(@room.northOpen==true)
   			message=message+"
-  			* Norte"
+  	* Norte"
   		end
   		if(@room.southOpen)
   			message=message+"
-  			* Sur"
+  	* Sur"
   		end
   		if(@room.eastOpen)
   			message=message+"
-  			* Este"
+  	* Este"
   		end
   		if(@room.westOpen)
   			message=message+"
-  			* Oeste"
+  	* Oeste"
   		end
   		return message
   	end
@@ -238,14 +238,14 @@ class Game
 
   	def showMessageDetectArrow
   		return "
-  		Agarraste una flecha del cuarto"
+  Agarraste una flecha del cuarto"
   	end
 
   	def showMessageAction
 	    return "
-	    Que accion quieres realizar? 
-	    * Moverse
-	    * Lanzar flecha"
+      Que accion quieres realizar? 
+      * Moverse
+      * Lanzar flecha"
   	end
 
 	def getHunterPositionMessage
@@ -378,7 +378,7 @@ class Game
 			while(correctMovement(@arrow,direction)) do
 				realizeMovement('arrow',direction)
 				if (getWumpusPosition == getArrowPosition)
-					@hunter.setMoney(100)
+					@hunter.setMoney(@hunter.getQuantityOfMoney+100)
 					return true
 				end
 			end
@@ -418,6 +418,7 @@ class Game
   			@hunter.useSpray
   			@bats.killMonster
   			@dismissSleepTurn
+  			@hunter.setMoney(@hunter.getQuantityOfMoney+30)
   			return true
   		end
   		return false
@@ -425,17 +426,17 @@ class Game
 
   	def useSprayMessage
   		return"
-  		Usaste el spray que tenias. Los murciélagos quedaron dormidos"
+  Usaste el spray que tenias. Los murciélagos quedaron dormidos"
   	end
 
   	def randomMovementByBatsMessage
   		return"
-  		Te llevaron a la habitacion "+ getHunterPosition.to_s
+  	Te llevaron a la habitacion "+ getHunterPosition.to_s
   	end
 
   	def detectBatsMessage
   		return"
-  		 Cuidado! Te encontraste con murciélagos"
+  	Cuidado! Te encontraste con murciélagos"
   	end
 
   	def moveRandomByBats
