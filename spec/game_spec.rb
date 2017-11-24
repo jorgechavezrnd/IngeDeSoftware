@@ -70,7 +70,7 @@ describe Game do
 
 	it "deberia mostrar el mensaje Que accion quieres realizar? * Moverse * Lanzar flecha" do
 		@game.newDefaultGame(false, 'small')
-		expect(@game.showMessageAction).to eq("\n\t    Que accion quieres realizar? \n\t    * Moverse\n\t    * Lanzar flecha")
+		expect(@game.showMessageAction).to eq("\n      Que accion quieres realizar? \n      * Moverse\n      * Lanzar flecha")
 	end
 
 	it "deberia mostrar el mensaje No tiene flechas que disparar" do
@@ -85,12 +85,12 @@ describe Game do
 
 	it "deberia mostrar el mensaje La flecha se pierde de tu vista" do
 		@game.newDefaultGame(false, 'small')
-		expect(@game.showMessageMissingArrow).to eq("\n\t\tLa flecha se pierde de tu vista")
+		expect(@game.showMessageMissingArrow).to eq("\n      La flecha se pierde de tu vista")
 	end
 
 	it "deberia mostrar el mensaje Hay un olor en el aire, el wumpus está cerca" do
 		@game.newDefaultGame(false, 'small')
-		expect(@game.showMessageWumpusAround).to eq("\n\t    Hay un olor en el aire, el wumpus está cerca")
+		expect(@game.showMessageWumpusAround).to eq("\n  Hay un olor en el aire, el wumpus est\u00E1 cerca")
 	end
 
 	it "deberia devolver North si el numero es 0" do
