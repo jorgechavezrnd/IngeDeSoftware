@@ -3,7 +3,8 @@ class Player
     def initialize
         @x = 1
         @y = 1
-        @live = false
+        @live = true
+        
     end
 
     def setPositionX(x)
@@ -22,16 +23,16 @@ class Player
         return @y
     end
 
-    def PlayerAlive
+    def playerAlive
         return @live
     end
 
     def setPlayerStatus
-        if (@live == true) then
-            @live = false
-        else
-            @live = true
-        end 
+        @live = false
+    end
+
+    def revivePlayer
+        @live = true
     end
 
 end

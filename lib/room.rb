@@ -1,35 +1,29 @@
 class Room
 
    def initialize
-
    		@entries = [0,0,0,0]
          @wumpus = false
-         @player = false
+         @hunter = false
          @arrow = false
          @bats = false
          @waterWell = false
          @breeze = false
          @quantityArrow = 0
-
    end
 
-   def WumpusHere
+   def wumpusHere
       return @wumpus
    end
 
-   def PlayerHere
-      return @player
+   def hunterHere
+      return @hunter
    end
 
-   def QuantityArrowHere
-      return @quantityArrow
-   end
-   
-   def ArrowHere
+   def arrowHere
       return @arrow
    end
 
-   def BatsHere
+   def batsHere
       return @bats
    end
 
@@ -37,126 +31,130 @@ class Room
       return @waterWell
    end
 
-   def BreezeHere
+   def breezeHere
       return @breeze
    end
 
+   def quantityArrowHere
+      return @quantityArrow
+   end
+   
+   def incrementArrowQuantity
+      @quantityArrow = @quantityArrow + 1
+   end
+
+   def decreaseArrowQuantity
+      if (@quantityArrow > 0) then
+         @quantityArrow = @quantityArrow - 1
+      end
+   end
+
    def setWumpusStay
-      if (@wumpus==false) then
-         @wumpus=true
+      if (@wumpus) then
+         @wumpus =false
       else
-         @wumpus=false
+         @wumpus = true
       end
    end
 
    def setArrowStay
-      if (@arrow==false) then
-         @arrow=true
+      if (@arrow) then
+         @arrow = false
       else
-         @arrow=false
+         @arrow = true
       end
    end
 
-   def setPlayerStay
-      if(@player==true) then
-         @player=false
+   def setHunterStay
+      if(@hunter) then
+         @hunter = false
       else
-         @player=true
-      end
-   end
-
-   def incrementArrowQuantity
-      @quantityArrow=@quantityArrow+1
-   end
-
-   def decreaseArrowQuantity
-      if (@quantityArrow>0) then
-         @quantityArrow=@quantityArrow-1
+         @hunter = true
       end
    end
 
    def setBatsStay
-      if (@bats==false) then         
-         @bats=true
+      if (@bats) then         
+         @bats = false
       else
-         @bats=false
+         @bats = true
       end
    end
 
    def setWaterWellStay
-      if (@waterWell==false) then 
-         @waterWell=true
+      if (@waterWell) then 
+         @waterWell = false
       else
-         @waterWell=false
+         @waterWell = true
       end
    end
 
    def setBreezeStay
-      if (@breeze==false) then
-         @breeze=true
+      if (@breeze) then
+         @breeze = false
       else
-         @breeze=false
+         @breeze = true
       end
    end
 
-   def OpenEntryNorth
+   def openEntryNorth
    		@entries[0]=1
    end
 
-   def CloseEntryNorth
+   def closeEntryNorth
    		@entries[0]=0
    end
 
-   def OpenEntrySouth
+   def openEntrySouth
    		@entries[1]=1
    end
 
-   def CloseEntrySouth
+   def closeEntrySouth
    		@entries[1]=0
    end
 
-   def OpenEntryEast
+   def openEntryEast
    		@entries[2]=1
    end
-   def CloseEntryEast
+   def closeEntryEast
    		@entries[2]=0
    end
 
-   def OpenEntryWest
+   def openEntryWest
    		@entries[3]=1
    end
    
-   def CloseEntryWest
-   		@entries[3]=0
+   def closeEntryWest
+   		@entries[3] = 0
    end
 
    
    def northOpen
-         return @entries[0]==1
+         return @entries[0] == 1
    end
+
    def southOpen
-         return @entries[1]==1
+         return @entries[1] == 1
    end
 
    def eastOpen
-         return @entries[2]==1
+         return @entries[2] == 1
    end
 
    def westOpen
-         return @entries[3]==1
+         return @entries[3] == 1
    end
    
-
-   def EntryOpen(direction)
-   		if(direction=='South')then
-   			return southOpen
-   		elsif (direction=='North') then
-   			return northOpen
-   		elsif (direction=='East') then
-   			return eastOpen
-   		elsif (direction=='West') then
-   			return westOpen
-   		end
+   def entryOpen(direction)
+		if(direction == 'South')then
+			return southOpen
+		elsif (direction == 'North') then
+			return northOpen
+		elsif (direction == 'East') then
+			return eastOpen
+		elsif (direction == 'West') then
+			return westOpen
+		end
    end
 
 end

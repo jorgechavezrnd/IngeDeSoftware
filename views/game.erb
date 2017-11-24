@@ -1,6 +1,21 @@
 <% if @youLose == true %>
   <script>
-    if (window.confirm('El wumpus te encontró y decidió atacarte. Trataste de defenderte pero fue inútil. Fin del juego')) 
+    if (window.confirm('El wumpus te encontró y decidió atacarte. Trataste de defenderte pero fue inútil. Fin del juego. Monedas totales: <%= @money %>')) 
+    {
+      window.location.href='/';
+    }
+    else
+    {
+      window.location.href='/';
+    }
+  </script>
+
+
+<% end %>
+
+<% if @waterWell == true %>
+  <script>
+    if (window.confirm('Haz caido en un pozo, no puedes salir de ahi, fin del juego. Monedas totales: <%= @money %>')) 
     {
       window.location.href='/';
     }
@@ -13,7 +28,7 @@
 
 <% if @youWin == true %>
   <script>
-    if (window.confirm('Ganaste. Fin del juego')) 
+    if (window.confirm('Ganaste. Fin del juego. Monedas totales: <%= @money %>')) 
     {
       window.location.href='/';
     }
@@ -30,6 +45,10 @@
     <th>
       <textarea name="informacion" rows="40" cols="50" disabled>
         <% if @wumpusAround == true %><%= @messageWumpusAround %><% end %>
+        <% if @detectArrow == true %><%= @detectArrowMessage %><% end %>
+        <% if @detectBreeze == true %><%= @messageBreeze %><% end %>
+        <% if @detectBats == true %><%= @detectBatsMessage %><% end %>
+        <% if @useSpray == true %><%= @useSprayMessage %><% end %><% if @moveRandom == true %><%= @randomMovementByBatsMessage %><% end %>
         <% if @shootfail == true %><%= @messageShootFail %><% end %><% if @arrowEmpty == true %><%= @messageArrowQuantity %><% end %><% if @wrongMove == true %><%= @messageNotMovement %><% end %>
         <%= @playerPosition %>
         <% if @action == true %><%= @messageAction %><% end %><% if @shoot == true %><%= @messageShootOption %><% end %><% if @move == true %><%= @messageMovementOption %><% end %>
@@ -40,6 +59,8 @@
     <th valign="top">
 
       <h2> Flechas: <%= @numberArrow %> </h2>
+      <h2> Monedas: <%= @money %> </h2>
+      <h2> Spray: <%= @numberSpray %> </h2>
 
       <form action="/action" method="post">
         <button name="accion" type="submit" value="disparar">Lanzar flecha</button>

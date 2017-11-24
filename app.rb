@@ -12,10 +12,35 @@ $WRONGMOVE=false
 $SHOOTFAIL= false
 $EMPTYARROWS = false
 $WUMPUSAROUND = false
+$SLEEP = false
+$WATERWELL = false
+$DETECTARROW = false
+$DETECTBREEZE = false
+$DETECTBATS = false
+$USESPRAY = false
+$MOVERANDOM = false
 
 get '/' do
+  erb :index
+end
+
+get '/options' do
+  erb :options
+end
+
+post '/start' do
+  if(params[:map]=='small')
+    map = 'small'
+  else
+    map = 'medium'
+  end
+  if(params[:move]=='no')
+    move = false
+  else
+    move = true
+  end
   $GAME = Game.new
-  $GAME.newDefaultGame(true, 'small')
+  $GAME.newDefaultGame(move, map)
   $LOSE = false
   $WIN = false
   $MOVE = false
@@ -25,12 +50,18 @@ get '/' do
   $SHOOTFAIL= false
   $EMPTYARROWS = false
   $WUMPUSAROUND = false
-  erb :index
+  $SLEEP = false
+  $WATERWELL = false
+  $DETECTARROW = false
+  $DETECTBREEZE = false
+  $DETECTBATS = false
+  $USESPRAY = false
+  $MOVERANDOM = false
+  redirect "/game"
 end
 
 get '/game' do
-
-  if $GAME.detectWumpus
+  if $GAME.detectWumpus('South') || $GAME.detectWumpus('North') ||$GAME.detectWumpus('East') || $GAME.detectWumpus('West')
     $WUMPUSAROUND = true
   end
   @youLose = $LOSE
@@ -42,6 +73,13 @@ get '/game' do
   @youWin = $WIN
   @arrowEmpty = $EMPTYARROWS
   @wumpusAround = $WUMPUSAROUND
+  @sleep = $SLEEP
+  @waterWell=$WATERWELL
+  @detectArrow=$DETECTARROW
+  @detectBreeze=$DETECTBREEZE
+  @useSpray=$USESPRAY
+  @detectBats=$DETECTBATS
+  @moveRandom=$MOVERANDOM
   $SHOOT = false
   $MOVE = false
   $ACTION = true
@@ -49,8 +87,23 @@ get '/game' do
   $SHOOTFAIL = false
   $EMPTYARROWS = false
   $WUMPUSAROUND = false
-  @playerPosition = $GAME.getPlayerPositionMessage
-  @numberArrow = $GAME.getNumberArrow
+  $SLEEP = false
+  $WATERWELL = false
+  $DETECTARROW = false
+  $DETECTBREEZE = false
+  $DETECTBATS = false
+  $USESPRAY = false
+  $MOVERANDOM = false
+  @playerPosition = $GAME.getHunterPositionMessage
+  hunter = $GAME.getHunter
+  @numberArrow = hunter.getQuantityArrows
+  @randomMovementByBatsMessage = $GAME.randomMovementByBatsMessage
+  @useSprayMessage = $GAME.useSprayMessage
+  @detectBatsMessage = $GAME.detectBatsMessage
+  @numberSpray = hunter.getQuantitySpray
+  @money = hunter.getQuantityOfMoney
+  @messageBreeze = $GAME.showMessageBreeze
+  @detectArrowMessage = $GAME.showMessageDetectArrow
   @messageArrowQuantity=$GAME.showMessageEmptyArrow
   @messageAction=$GAME.showMessageAction
   @messageMovementOption = $GAME.showMessageMove
@@ -64,7 +117,7 @@ end
 
 
 post '/action' do
-  if $GAME.detectWumpus
+  if $GAME.detectWumpus('South') || $GAME.detectWumpus('North') ||$GAME.detectWumpus('East') || $GAME.detectWumpus('West')
     $WUMPUSAROUND = true
   end
   if params[:accion] == 'salir'
@@ -72,7 +125,8 @@ post '/action' do
     $GAME.newDefaultGame(true, 'small')
     redirect "/"
   elsif params[:accion] == 'disparar'
-    if($GAME.haveArrows)
+    hunter = $GAME.getHunter
+    if(hunter.haveArrows)
       $SHOOT = true
       $MOVE = false
       $ACTION = false
@@ -106,8 +160,27 @@ end
 
 
 post '/move' do
-  resultAction = $GAME.movePlayer(params[:direccion])
-  if $GAME.YourLose == true
+  $GAME.moveBat
+  resultAction = $GAME.moveHunter(params[:direccion])
+  if($GAME.detectArrow)
+    $DETECTARROW = true
+  end
+  if($GAME.detectWaterWell)
+    $WATERWELL = true
+  end
+  if($GAME.detectBats)
+    $DETECTBATS = true
+    if($GAME.useSpray)
+      $USESPRAY = true
+    else
+      $GAME.moveRandomByBats
+      $MOVERANDOM = true
+    end
+  end
+  if($GAME.detectBreeze)
+    $DETECTBREEZE = true
+  end
+  if $GAME.youDeath == false
     $GAME = Game.new
     $GAME.newDefaultGame(true, 'small')
     $LOSE = true
@@ -115,12 +188,15 @@ post '/move' do
     if resultAction == false
       $WRONGMOVE= true
     end
-    if $GAME.detectWumpus
+    if $GAME.detectWumpus('South') || $GAME.detectWumpus('North') ||$GAME.detectWumpus('East') || $GAME.detectWumpus('West')
       $WUMPUSAROUND = true
     end
     $ACTION= true
     $SHOOT= false
     $MOVE = false
+  end
+  if $GAME.batsStatus == false
+    $SLEEP = true
   end
   redirect "/game"
 end

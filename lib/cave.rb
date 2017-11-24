@@ -1,253 +1,131 @@
-require './lib/room'
+require './lib/map'
 class Cave
 
   def initialize
-    @numberCols = 0
-    @numberRows = 0 
-    @rooms=Array.new(1)
-    for i in 0..1
-      @rooms[i] = Array.new(1)
-    end
+    @map = Map.new   
   end
 
-  def setNumberCols(numberCols)
-    @numberCols=numberCols
+  def createCave(type)
+    if (type == 'small')
+      @map.createDefaultSmallMap
+    elsif (type == 'medium')
+      @map.createDefaultMediumMap
+    elsif (type == 'big')
+      @map.createDefaultBigMap
+    end   
   end
 
-  def setNumberRows(numberRows)
-    @numberRows=numberRows
+  def getHeightCave
+    return @map.getNumberRows
   end
 
-  def getNumberCols
-    return @numberCols
-  end
-
-  def getNumberRows
-    return @numberRows
-  end
-
-  def createDefaultSmallMap
-    @numberRows=4
-    @numberCols=4
-    generateMap(@numberRows,@numberCols)
-    generateWallsDefaultSmallMap
-  end
-
-  def createDefaultMediumMap
-    @numberRows=8
-    @numberCols=8
-    generateMap(@numberRows,@numberCols)
-
-  end
-
-  def createDefaultBigMap
-    @numberRows=12
-    @numberCols=12
-    generateMap(@numberRows,@numberCols)
+  def getWidthCave
+    return @map.getNumberCols
   end
 
   def createEditedMap(numberRows,numberCols)
-    @numberCols=numberCols
-    @numberRows=numberRows
-    generateMap(@numberRows,@numberCols)
+    @map.createEditedMap(numberRows,numberCols)
   end
 
-  def generateMap(numberRows,numberCols)
-    @rooms=Array.new(numberRows)
-    for i in 0..(numberRows - 1)
-      @rooms[i] = Array.new(numberCols - 1)
-    end
-    for i in 0..(numberRows - 1)
-      for j in 0..(numberCols - 1)
-        @rooms[i][j] = Room.new
-      end
-    end
+  def getRoomOfCave(positionX,positionY)
+    return @map.getRoom(positionX,positionY)
   end
 
-  def generateWallsDefaultSmallMap
-    @room=getRoom(0,0)
-    @room.OpenEntrySouth
-    @room.OpenEntryEast
-    setRoom(@room,0,0)
-    @room=getRoom(0,1)
-    @room.OpenEntryNorth
-    setRoom(@room,0,1)
-    @room=getRoom(0,2)
-    @room.OpenEntryEast
-    setRoom(@room,0,2)
-    @room=getRoom(0,3)
-    @room.OpenEntryEast
-    setRoom(@room,0,3)
-    @room=getRoom(1,0)
-    @room.OpenEntryWest
-    @room.OpenEntryEast
-    setRoom(@room,1,0)
-    @room=getRoom(1,1)
-    @room.OpenEntryEast
-    setRoom(@room,1,1)
-    @room=getRoom(1,2)
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    @room.OpenEntryEast
-    setRoom(@room,1,2)
-    @room=getRoom(1,3)
-    @room.OpenEntryNorth
-    @room.OpenEntryWest
-    setRoom(@room,1,3)
-    @room=getRoom(2,0)
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    @room.OpenEntryEast
-    setRoom(@room,2,0)
-    @room=getRoom(2,1)
-    @room.OpenEntryNorth
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    setRoom(@room,2,1)
-    @room=getRoom(2,2)
-    @room.OpenEntryNorth
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    @room.OpenEntryEast
-    setRoom(@room,2,2)
-    @room=getRoom(2,3)
-    @room.OpenEntryNorth
-    setRoom(@room,2,3)
-    @room=getRoom(3,0)
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    setRoom(@room,3,0)
-    @room=getRoom(3,1)
-    @room.OpenEntryNorth
-    setRoom(@room,3,1)
-    @room=getRoom(3,2)
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    setRoom(@room,3,2)
-    @room=getRoom(3,3)
-    @room.OpenEntryNorth
-    setRoom(@room,3,3)
-  end
-
-  def generateWallsDefaultMediumlMap
-    @room=getRoom(0,0)
-    @room.OpenEntryEast
-    setRoom(@room,0,0)
-    @room=getRoom(1,0)
-    @room.OpenEntrySouth
-    @room.OpenEntryEast
-    @room.OpenEntryWest
-    setRoom(@room,1,0)
-    @room=getRoom(2,0)
-    @room.OpenEntryWest
-    @room.OpenEntryEast
-    setRoom(@room,2,0)
-    @room=getRoom(3,0)
-    @room.OpenEntryWest
-    @room.OpenEntrySouth
-    setRoom(@room,3,0)
-    @room=getRoom(5,0)
-    @room.OpenEntryEast
-    @room.OpenEntrySouth
-    setRoom(@room,5,0)
-    @room=getRoom(6,0)
-    @room.OpenEntryEast
-    @room.OpenEntryWest
-    setRoom(@room,6,0)
-    @room=getRoom(7,0)
-    @room.OpenEntryWest
-    setRoom(@room,7,0)
-    @room=getRoom(0,1)
-    @room.OpenEntrySouth
-    setRoom(@room,0,1)
-    @room=getRoom(1,1)
-    @room.OpenEntryNorth
-    setRoom(@room,1,1)
-    @room=getRoom(2,1)
-    @room.OpenEntrySouth
-    setRoom(@room,2,1)
-    @room=getRoom(3,1)
-    @room.OpenEntryNorth
-    @room.OpenEntrySouth
-    @room.OpenEntryEast
-    setRoom(@room,3,1)
-    @room=getRoom(4,1)
-    @room.OpenEntryEast
-    @room.OpenEntryWest
-    setRoom(@room,4,1)
-    @room=getRoom(5,1)
-    @room.OpenEntryNorth
-    @room.OpenEntrySouth
-    @room.OpenEntryWest
-    setRoom(@room,5,1)
-    @room=getRoom(6,1)
-    @room.OpenEntrySouth
-    setRoom(@room,6,1)
-    @room=getRoom(7,1)
-    @room.OpenEntryNorth
-    @room.OpenEntrySouth
-    setRoom(@room,7,1)
-  end
-
-  def quantityOfRooms
-    return @numberRows*@numberCols
-  end
-
-  def getRoom(positionX,positionY)
-    return @rooms[positionX][positionY]
-  end
-
-  def setRoom(room,positionX,positionY)
-    @rooms[positionX][positionY]=room
+  def setRoomOfCave(room,positionX,positionY)
+    @map.setRoom(room,positionX,positionY)
   end
 
   def movePlayerToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.setPlayerStay
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.setHunterStay
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def moveWumpusToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.setWumpusStay
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.setWumpusStay
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def moveBatsToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.setBatsStay
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.setBatsStay
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def moveArrowToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.setArrowStay
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.setArrowStay
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def putArrowToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.incrementArrowQuantity
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.incrementArrowQuantity
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def removeArrowToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.decreaseArrowQuantity
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.decreaseArrowQuantity
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def putWaterWellToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.setWaterWellStay
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.setWaterWellStay
+    setRoomOfCave(room,positionX,positionY)
   end
 
   def putBreezeToRoom(positionX,positionY)
-    @room=getRoom(positionX,positionY)
-    @room.setBreezeStay
-    setRoom(@room,positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    room.setBreezeStay
+    setRoomOfCave(room,positionX,positionY)
   end
 
-  
+  def hunterWithWumpus (positionX,positionY) 
+    room = getRoomOfCave(positionX,positionY)
+    if (room.hunterHere==true && room.wumpusHere==true)
+      return true
+    else
+      return false
+    end
+  end 
+
+  def hunterWithBats (positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    if (room.hunterHere==true && room.batsHere==true)
+      return true
+    else
+      return false
+    end
+  end
+
+  def hunterWithBreeze (positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    if (room.hunterHere==true && room.breezeHere==true)
+      return true
+    else
+      return false
+    end
+  end
+
+  def hunterWithArrows (positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    if (room.hunterHere==true && room.arrowHere==true)
+      return true
+    else
+      return false
+    end
+  end
+
+  def hunterWithWaterWell (positionX,positionY)
+    room = getRoomOfCave(positionX,positionY)
+    if (room.hunterHere==true && room.waterWellHere==true)
+      return true
+    else
+      return false
+    end
+  end
+
 end

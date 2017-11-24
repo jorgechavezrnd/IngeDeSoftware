@@ -1,26 +1,51 @@
-require './lib/player'
+require './lib/hunter'
+require './lib/monster'
 require './lib/cave'
 require './lib/room'
 class Game
 
 	def initialize
 		@cave = Cave.new
-		@wumpus = Player.new
-		@arrow = Player.new
-		@QuantityArrows = 0
-		@player = Player.new
-		@bats = Player.new
-		@RemainingTurnsBats = 0
+		@hunter = Hunter.new
+		@hunter.takeArrow
+		@hunter.takeArrow
+		@hunter.takeArrow
+		@hunter.takeSpray
+		@arrow = Hunter.new
+		@wumpus = Monster.new
+		@bats = Monster.new
+		@RemainingTurnsBats = 10
 		@wumpusMove = false
-		@QuantitySpray = 0
+		@sleepTurn = 1
 	end
 
 	def getCave
 		return @cave
 	end
 
+	def getSleepTurn
+		@bats.reviveMonster
+		return @sleepTurn
+	end
+
+	def dismissSleepTurn
+		@sleepTurn = 0
+	end
+
+	def resetSleepTurn
+		@sleepTurn = 1
+	end
+
 	def setCave(cave)
 		@cave=cave
+	end
+
+	def getArrow
+		return @arrow
+	end
+
+	def setArrow(arrow)
+		@arrow = arrow
 	end
 
 	def getWumpus
@@ -28,69 +53,69 @@ class Game
 	end
 
 	def setWumpus(wumpus)
-		wumpus=@wumpus
+		@wumpus = wumpus
 	end
 
-	def getPlayer
-		return @player
+	def getHunter
+		return @hunter
 	end
 
-	def setPlayer(player)
-		@player=player
+	def setHunter(hunter)
+		@hunter = hunter
 	end	
 
+	def getBats
+		return @bats
+	end
+
+	def setBats(bats)
+		@bats = bats
+	end	
+
+	def getQuantityOfRooms
+		return @cave.getWidthCave*@cave.getHeightCave
+	end
+
 	def newDefaultGame(wumpusMove, typeOfMap)
-		@player.setPlayerStatus
-		@wumpus.setPlayerStatus
-		@arrow.setPlayerStatus
-		@bats.setPlayerStatus
 		if(wumpusMove == true)
-			@wumpusMove = wumpusMove
+			@wumpusMove = true
 		end
 		@RemainingTurnsBats = 10
 		@QuantityArrows = 3
 		@QuantitySpray = 1
-		TypeOfDefaultMap(typeOfMap)
+		typeOfDefaultMap(typeOfMap)
 	end
 
-	def TypeOfDefaultMap(typeOfMap)
+	def typeOfDefaultMap(typeOfMap)
 		if(typeOfMap=='small') then
-			@cave.createDefaultSmallMap
+			@cave.createCave(typeOfMap)
 			initializePositionPlayersDefaultMap
 		elsif (typeOfMap=='medium') then
-			@cave.createDefaultMediumMap
+			@cave.createCave(typeOfMap)
 			initializePositionPlayersDefaultMap
 		elsif (typeOfMap=='big') then
-			@cave.createDefaultBigMap
+			@cave.createCave(typeOfMap)
 			initializePositionPlayersDefaultMap
 		end				
 	end
 
 	def initializePositionPlayersDefaultMap
-		@player.setPositionX(0)
-		@player.setPositionY(0)
-		@wumpus.setPositionX((@cave.getNumberCols-1))
-		@wumpus.setPositionY((@cave.getNumberRows-1))
+		@hunter.setPositionX(0)
+		@hunter.setPositionY(0)
+		@wumpus.setPositionX((@cave.getWidthCave-1))
+		@wumpus.setPositionY((@cave.getHeightCave-1))
 		@bats.setPositionX(0)
-		@bats.setPositionY((@cave.getNumberRows-1))
-		@cave.movePlayerToRoom(0,0)
-		@cave.moveWumpusToRoom((@cave.getNumberCols-1),(@cave.getNumberRows-1))
-		@cave.moveBatsToRoom(0,(@cave.getNumberRows-1))
+		@bats.setPositionY((@cave.getHeightCave-1))
+		@cave.movePlayerToRoom(@hunter.getPositionX,@hunter.getPositionY)
+		@cave.moveWumpusToRoom(@wumpus.getPositionX,@wumpus.getPositionY)
+		@cave.moveBatsToRoom(@bats.getPositionX,@bats.getPositionY)
 	end
 
 	def getRemainingTurnBats
 		return @RemainingTurnsBats
 	end
 
-	def getQuantityArrows
-		return @QuantityArrows
-	end
-
-	def decreaseArrowQuantity
-		@QuantityArrows = @QuantityArrows - 1
-	end
-
-	def WumpusMove
+	def wumpusMove
 		return @wumpusMove
 	end
 
@@ -107,148 +132,26 @@ class Game
 	end
 
 	def getBatsPosition
-		return ((@cave.getNumberRows)*@bats.getPositionY) + (@bats.getPositionX+1) 
-	end
-
-	def getPlayerPosition
-		return ((@cave.getNumberRows)*@player.getPositionY) + (@player.getPositionX+1) 
-	end
-
-	def getWumpusPosition
-		return ((@cave.getNumberRows)*@wumpus.getPositionY) + (@wumpus.getPositionX+1) 
+		return ((@cave.getHeightCave)*@bats.getPositionY) + (@bats.getPositionX+1) 
 	end
 
 	def getArrowPosition
-		return ((@cave.getNumberRows)*@arrow.getPositionY) + (@arrow.getPositionX+1) 
+		return ((@cave.getHeightCave)*@arrow.getPositionY) + (@arrow.getPositionX+1) 
 	end
 
-	def haveArrows
-		return @QuantityArrows>0
-  	end
-
-  	def getNumberArrow
-    	return @QuantityArrows.to_s
-  	end
-
-	def wumpusAlive
-		return @wumpus.PlayerAlive
+	def getHunterPosition
+		return ((@cave.getHeightCave)*@hunter.getPositionY) + (@hunter.getPositionX+1) 
 	end
 
-	def CorrectMovement(player,direction)
-		@room = @cave.getRoom(player.getPositionX,player.getPositionY)
-		return @room.EntryOpen(direction)
+	def getWumpusPosition
+		return ((@cave.getHeightCave)*@wumpus.getPositionY) + (@wumpus.getPositionX+1) 
 	end
 
-	def realizeMovement(player,direction)
-		if (player == 'bats')
-			@cave.moveBatsToRoom(@bats.getPositionX,@bats.getPositionY)
-			@bats = movePlayerToDirection(@bats,direction)
-			@cave.moveBatsToRoom(@bats.getPositionX,@bats.getPositionY)
-		elsif (player == 'wumpus')
-			@cave.moveWumpusToRoom(@wumpus.getPositionX,@wumpus.getPositionY)
-			@wumpus = movePlayerToDirection(@wumpus,direction)
-			@cave.moveBatsToRoom(@wumpus.getPositionX,@wumpus.getPositionY)
-		elsif (player == 'player')
-			@cave.movePlayerToRoom(@player.getPositionX,@player.getPositionY)
-			@player = movePlayerToDirection(@player,direction)
-			@cave.moveBatsToRoom(@player.getPositionX,@player.getPositionY)
-		elsif (player == 'arrow')
-			@cave.moveArrowToRoom(@arrow.getPositionX,@arrow.getPositionY)
-			@arrow = movePlayerToDirection(@arrow,direction)
-			@cave.moveArrowToRoom(@arrow.getPositionX,@arrow.getPositionY)
-		end
+	def getRoomOfHunter(positionX,positionY)
+		return @cave.getRoomOfCave(positionX,positionY)
 	end
 
-	def movePlayerToDirection(player,direction)
-		if(direction == 'North')
-			player.setPositionY(player.getPositionY-1)
-		elsif (direction == 'South') 
-			player.setPositionY(player.getPositionY+1)
-		elsif (direction == 'West')
-			player.setPositionX(player.getPositionX-1)
-		elsif (direction == 'East')
-			player.setPositionX(player.getPositionX+1)
-		end
-		return player
-	end
-
-	def DecideRandomDirection(number)
-		if(@number==0)
-			@direction='North'
-		elsif (@randomDecision==1)
-			@direction='South'
-		elsif (@randomDecision==2)
-			@direction='East'
-		elsif (@randomDecision==3)
-			@direction='West'
-		end
-		return @direction
-	end
-
-	def MoveBat
-		@moveSuccessful=false
-		if(@RemainingTurnsBats == 0 && @bats.PlayerAlive)
-			while (@moveSuccessful==false) do
-				@randomDecision=Random.new
-				@randomDecision.rand(0..3)
-				@direction=DecideRandomDirection(@randomDecision)
-				if(CorrectMovement(@bats,@direction))
-					realizeMovement('bats',@direction)
-					@moveSuccessful = true
-				end
-			end
-			resetReaminingTurnsBats
-		end
-	end
-
-	def MoveWumpus
-		@moveSuccessful=false
-		if(@wumpus.PlayerAlive)
-			
-			while (@moveSuccessful==false) do
-				@randomDecision=Random.new
-				@randomDecision.rand(0..3)
-				@direction=DecideRandomDirection(@randomDecision)
-				if(CorrectMovement(@wumpus,@direction))
-					realizeMovement('wumpus',@direction)
-					@moveSuccessful = true
-				end
-			end
-		end
-		return @moveSuccessful
-	end
-
-	def movePlayer(direction)
-		if(CorrectMovement(@player,direction))
-			realizeMovement('player',direction)
-			return true
-		else
-			return false
-		end
-	end
-
-  	def shotArrow(direction)
-  		if(haveArrows==true)
-  			@arrow.setPositionX(@player.getPositionX)
-  			@arrow.setPositionY(@player.getPositionY)
-  			decreaseArrowQuantity
-			while(CorrectMovement(@arrow,direction)) do
-				realizeMovement('arrow',direction)
-				if (getWumpusPosition == getArrowPosition)
-					return true
-				end
-
-			end
-			return false
-  		end
-  		return false
-  	end
-
-	def detectWumpus
-		return (((@player.getPositionX+1) == @wumpus.getPositionX)|| ((@player.getPositionX-1) == @wumpus.getPositionX) || ((@player.getPositionY+1)==@wumpus.getPositionY) || ((@player.getPositionY-1) == @wumpus.getPositionY))
-  	end
-
-  	def showMessageWumpusAround
+	def showMessageWumpusAround
 	    return "
 	    Hay un olor en el aire, el wumpus está cerca"
   	end
@@ -271,7 +174,7 @@ class Game
   	end
 
   	def getPossibleMovements(message)
-  		@room=@cave.getRoom(@player.getPositionX,@player.getPositionY)
+  		@room=@cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
   		if(@room.northOpen==true)
   			message=message+"
   			* Norte"
@@ -301,6 +204,43 @@ class Game
     	No tiene flechas que disparar"
   	end
 
+  	def showMessageBreeze
+    	return "
+    	Se siente una brisa en el aire"
+  	end
+
+  	def detectWaterWell
+  		room = @cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
+  		if(room.waterWellHere)
+  			return true
+  		end
+  		return false
+  	end
+
+  	def detectBreeze
+  		room = @cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
+  		if(room.breezeHere)
+  			return true
+  		end
+  		return false
+  	end
+
+  	def detectArrow
+  		room = @cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
+  		if(room.arrowHere)
+  			@hunter.takeArrow
+  			room.setArrowStay
+  			@cave.setRoomOfCave(room,@hunter.getPositionX,@hunter.getPositionY)
+  			return true
+  		end
+  		return false
+  	end
+
+  	def showMessageDetectArrow
+  		return "
+  		Agarraste una flecha del cuarto"
+  	end
+
   	def showMessageAction
 	    return "
 	    Que accion quieres realizar? 
@@ -308,13 +248,209 @@ class Game
 	    * Lanzar flecha"
   	end
 
-	def getPlayerPositionMessage
+	def getHunterPositionMessage
       return "
-      Te encuentras en la habitacion " + getPlayerPosition.to_s
+      Te encuentras en la habitacion " + getHunterPosition.to_s
   	end
 
-  	def YourLose
-  		return getPlayerPosition==getWumpusPosition
+	def decideRandomDirection(number)
+		if(number==0)
+			direction='North'
+		elsif (number==1)
+			direction='South'
+		elsif (number==2)
+			direction='East'
+		elsif (number==3)
+			direction='West'
+		end
+		return direction
+	end
+
+	def youDeath
+  		return @hunter.hunterAlive
   	end
 
+	def correctMovement(player,direction)
+		room = @cave.getRoomOfCave(player.getPositionX,player.getPositionY)
+		return room.entryOpen(direction)
+	end
+
+	def realizeMovement(player,direction)
+		if (player == 'bats')
+			@cave.moveBatsToRoom(@bats.getPositionX,@bats.getPositionY)
+			setBats(movePlayerToDirection(@bats,direction))
+			@cave.moveBatsToRoom(@bats.getPositionX,@bats.getPositionY)
+		elsif (player == 'wumpus')
+			@cave.moveWumpusToRoom(@wumpus.getPositionX,@wumpus.getPositionY)
+			setWumpus(movePlayerToDirection(@wumpus,direction))
+			@cave.moveWumpusToRoom(@wumpus.getPositionX,@wumpus.getPositionY)
+		elsif (player == 'hunter')
+			@cave.movePlayerToRoom(@hunter.getPositionX,@hunter.getPositionY)
+			setHunter(movePlayerToDirection(@hunter,direction))
+			@cave.movePlayerToRoom(@hunter.getPositionX,@hunter.getPositionY)
+		elsif (player == 'arrow')
+			@cave.moveArrowToRoom(@arrow.getPositionX,@arrow.getPositionY)
+			setArrow(movePlayerToDirection(@arrow,direction))
+			@cave.moveArrowToRoom(@arrow.getPositionX,@arrow.getPositionY)
+		end
+	end
+
+	def movePlayerToDirection(player,direction)
+		if(direction == 'North')
+			player.setPositionY(player.getPositionY-1)
+		elsif (direction == 'South') 
+			player.setPositionY(player.getPositionY+1)
+		elsif (direction == 'West')
+			player.setPositionX(player.getPositionX-1)
+		elsif (direction == 'East')
+			player.setPositionX(player.getPositionX+1)
+		end
+		return player
+	end
+
+	def moveHunter(direction)
+		if(@wumpusMove==true)
+			moveWumpus
+		end
+		if(getWumpusPosition==getHunterPosition)
+			@hunter.killHunter
+		end
+		if(correctMovement(@hunter,direction))
+			realizeMovement('hunter',direction)
+			if(getWumpusPosition == getHunterPosition)
+				@hunter.killHunter
+			end
+			dismissTurnsBats
+			return true
+		else
+			if(getWumpusPosition==getHunterPosition)
+				@hunter.killHunter
+			end
+			dismissTurnsBats
+			return false
+		end
+	end
+
+	def moveBat
+		moveSuccessful = false
+		if(@sleepTurn==1)
+			if(@RemainingTurnsBats == 0)
+				while (!moveSuccessful) do
+					randomDecision = Random.new
+					randomDecision = randomDecision.rand(0..3)
+					direction = decideRandomDirection(randomDecision)
+					if(correctMovement(@bats,direction))
+						realizeMovement('bats',direction)
+						moveSuccessful = true
+					end
+				end
+				resetReaminingTurnsBats
+			end
+		else
+			resetSleepTurn
+		end
+	end
+
+	def batsStatus
+		return @bats.monsterAlive
+	end
+
+	def moveWumpus
+		moveSuccessful = false
+		while (!moveSuccessful) do
+			randomDecision = Random.new
+			randomDecision = randomDecision.rand(0..3)
+			direction = decideRandomDirection(randomDecision)
+			if(correctMovement(@wumpus,direction))
+				realizeMovement('wumpus',direction)
+				moveSuccessful = true
+			end
+		end
+	end
+
+  	def shotArrow(direction)
+  		if(@hunter.haveArrows==true)
+  			@arrow.setPositionX(@hunter.getPositionX)
+  			@arrow.setPositionY(@hunter.getPositionY)
+  			room = @cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
+  			room.setArrowStay
+  			@hunter.dropArrow
+			while(correctMovement(@arrow,direction)) do
+				realizeMovement('arrow',direction)
+				if (getWumpusPosition == getArrowPosition)
+					@hunter.setMoney(100)
+					return true
+				end
+			end
+			dismissTurnsBats
+			return false
+  		end
+  		dismissTurnsBats
+  		return false
+  	end
+
+  	def detectWumpus(direction)
+  		if(direction == 'South' && correctMovement(@hunter,'South'))
+  			return ((@hunter.getPositionY+1)==@wumpus.getPositionY && @hunter.getPositionX==@wumpus.getPositionX)
+  		end
+  		if(direction == 'North' && correctMovement(@hunter,'North'))
+  			return ((@hunter.getPositionY-1)==@wumpus.getPositionY && @hunter.getPositionX==@wumpus.getPositionX)
+  		end
+  		if(direction == 'East' && correctMovement(@hunter,'East'))
+  			return ((@hunter.getPositionX+1)==@wumpus.getPositionX && @hunter.getPositionY==@wumpus.getPositionY)
+  		end
+  		if(direction == 'West' && correctMovement(@hunter,'West'))
+  			return ((@hunter.getPositionX-1)==@wumpus.getPositionX && @hunter.getPositionY==@wumpus.getPositionY)
+  		end
+  		return false
+  	end
+
+  	def detectBats
+  		room = @cave.getRoomOfCave(@hunter.getPositionX,@hunter.getPositionY)
+  		if(room.batsHere)
+  			return true
+  		end
+  		return false
+  	end
+
+  	def useSpray
+  		if(@hunter.haveSpray)
+  			@hunter.useSpray
+  			@bats.killMonster
+  			@dismissSleepTurn
+  			return true
+  		end
+  		return false
+  	end
+
+  	def useSprayMessage
+  		return"
+  		Usaste el spray que tenias. Los murciélagos quedaron dormidos"
+  	end
+
+  	def randomMovementByBatsMessage
+  		return"
+  		Te llevaron a la habitacion "+ getHunterPosition.to_s
+  	end
+
+  	def detectBatsMessage
+  		return"
+  		 Cuidado! Te encontraste con murciélagos"
+  	end
+
+  	def moveRandomByBats
+  		randomDecision = getHunterPosition
+		while(getWumpusPosition==randomDecision || getHunterPosition==randomDecision) do
+			randomDecision = Random.new
+			randomDecision = randomDecision.rand(0..getQuantityOfRooms)
+		end
+  		(0..@cave.getWidthCave-1).each do |i|
+   			(0..@cave.getHeightCave-1).each do |j|
+   				if(randomDecision==(((@cave.getHeightCave)*j) + (i+1)))
+   					@hunter.setPositionX(i)
+   					@hunter.setPositionY(j)
+   				end
+			end
+		end
+  	end 
 end
