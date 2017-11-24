@@ -1,5 +1,7 @@
 require 'sinatra'
 require './lib/game'
+set :bind, '0.0.0.0'
+set :port, 3000
 
 $GAME = Game.new
 $GAME.newDefaultGame(true, 'small')
